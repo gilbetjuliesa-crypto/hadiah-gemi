@@ -2,7 +2,7 @@
 <html lang="id">
 <head>
 <meta charset="UTF-8">
-<title>Memory lane</title>
+<title>Memory Lane</title>
 
 <style>
 * {
@@ -24,7 +24,7 @@ body {
     position: absolute;
     width: 100%;
     height: 100%;
-    background: url('foto1.jpg') center/cover no-repeat;
+    background: url('gemi1.jpg') center/cover no-repeat;
     filter: blur(25px) brightness(0.3);
     transition: 1s;
 }
@@ -53,6 +53,7 @@ h1 {
     border-radius: 20px;
     overflow: hidden;
     box-shadow: 0 0 40px rgba(255,255,255,0.2);
+    transition: 0.5s;
 }
 
 /* Image & video */
@@ -73,6 +74,11 @@ h1 {
     color: black;
     cursor: pointer;
     font-weight: bold;
+    transition: 0.3s;
+}
+
+.btn:hover {
+    transform: scale(1.1);
 }
 </style>
 </head>
@@ -82,19 +88,20 @@ h1 {
 <div class="background" id="bg"></div>
 
 <div class="container">
-    <h1>Memory Line</h1>
+    <h1>Memory Lane</h1>
 
     <div class="frame" id="frame">
-        <img id="media" src="gemi1.jpg">
+        <img src="gemi1.jpg">
     </div>
 
     <button class="btn" onclick="playMusic()">Play Music</button>
 </div>
 
-<audio id="music" src="oke.mp3"></audio>
+<!-- AUDIO (SUDAH LOOP) -->
+<audio id="music" src="oke.mp3" loop></audio>
 
 <script>
-// TOTAL DURASI (1 menit = 60000 ms)
+// TOTAL DURASI (1 menit)
 let totalDuration = 60000;
 
 // LIST MEDIA
@@ -119,7 +126,7 @@ let mediaList = [
     {type: "video", src: "gemi5.mp4"}
 ];
 
-// hitung durasi per slide
+// durasi tiap slide
 let slideDuration = totalDuration / mediaList.length;
 
 let i = 0;
@@ -141,16 +148,12 @@ function showMedia() {
 
             bg.style.backgroundImage = `url('${item.src}')`;
 
-        } else if(item.type === "video") {
+        } else {
             let video = document.createElement("video");
             video.src = item.src;
             video.autoplay = true;
             video.muted = true;
-
-            // video hanya tampil sebentar
-            setTimeout(() => {
-                video.pause();
-            }, slideDuration);
+            video.loop = false;
 
             frame.appendChild(video);
 
@@ -165,12 +168,13 @@ function showMedia() {
     }, 300);
 }
 
-// interval sesuai durasi
+// jalan otomatis
 setInterval(showMedia, slideDuration);
 
-// MUSIC
+// PLAY MUSIC (loop otomatis)
 function playMusic(){
-    document.getElementById("music").play();
+    let music = document.getElementById("music");
+    music.play();
 }
 </script>
 
