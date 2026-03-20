@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<title>Memory lane</title>
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', sans-serif;
+}
+
+body {
+    height: 100vh;
+    background: #0f0f0f;
+    color: white;
+    overflow: hidden;
+}
+
+/* Background blur */
+.background {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: url('foto1.jpg') center/cover no-repeat;
+    filter: blur(25px) brightness(0.3);
+    transition: 1s;
+}
+
+/* Container */
+.container {
+    position: relative;
+    z-index: 2;
+    text-align: center;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+/* Judul */
+h1 {
+    font-size: 40px;
+    letter-spacing: 3px;
+    margin-bottom: 20px;
+}
+
+/* Frame */
+.frame {
+    width: 320px;
+    height: 320px;
+    margin: auto;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 0 40px rgba(255,255,255,0.2);
+}
+
+/* Image & video */
+.frame img, 
+.frame video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* Tombol */
+.btn {
+    margin-top: 25px;
+    padding: 10px 25px;
+    border-radius: 30px;
+    border: none;
+    background: white;
+    color: black;
+    cursor: pointer;
+    font-weight: bold;
+}
+</style>
+</head>
+
+<body>
+
+<div class="background" id="bg"></div>
+
+<div class="container">
+    <h1>Memory Line</h1>
+
+    <div class="frame" id="frame">
+        <img id="media" src="gemi1.jpg">
+    </div>
+
+    <button class="btn" onclick="playMusic()">Play Music</button>
+</div>
+
+<audio id="music" src="oke.mp3"></audio>
+
+<script>
+// TOTAL DURASI (1 menit = 60000 ms)
+let totalDuration = 60000;
+
+// LIST MEDIA
+let mediaList = [
+    {type: "img", src: "gemi2.jpg"},
+    {type: "img", src: "gemi3.jpg"},
+    {type: "img", src: "gemi4.jpg"},
+    {type: "video", src: "gemi.mp4"},
+    {type: "img", src: "gemi5.jpg"},
+    {type: "img", src: "gemi6.jpg"},
+    {type: "img", src: "gemi7.jpg"},
+    {type: "img", src: "gemi8.jpg"},
+    {type: "img", src: "gemi9.jpg"},
+    {type: "video", src: "gemi2.mp4"},
+    {type: "img", src: "gemi10.jpg"},
+    {type: "img", src: "gemi11.jpg"},
+    {type: "img", src: "gemi13.jpg"},
+    {type: "img", src: "gemi14.jpg"},
+    {type: "video", src: "gemi3.mp4"},
+    {type: "img", src: "gemi15.jpg"},
+    {type: "img", src: "gemi16.jpg"},
+    {type: "video", src: "gemi5.mp4"}
+];
+
+// hitung durasi per slide
+let slideDuration = totalDuration / mediaList.length;
+
+let i = 0;
+
+function showMedia() {
+    let frame = document.getElementById("frame");
+    let bg = document.getElementById("bg");
+
+    frame.style.opacity = 0;
+
+    setTimeout(() => {
+        frame.innerHTML = "";
+        let item = mediaList[i];
+
+        if(item.type === "img") {
+            let img = document.createElement("img");
+            img.src = item.src;
+            frame.appendChild(img);
+
+            bg.style.backgroundImage = `url('${item.src}')`;
+
+        } else if(item.type === "video") {
+            let video = document.createElement("video");
+            video.src = item.src;
+            video.autoplay = true;
+            video.muted = true;
+
+            // video hanya tampil sebentar
+            setTimeout(() => {
+                video.pause();
+            }, slideDuration);
+
+            frame.appendChild(video);
+
+            bg.style.backgroundImage = "url('gemi1.jpg')";
+        }
+
+        frame.style.opacity = 1;
+
+        i++;
+        if(i >= mediaList.length) i = 0;
+
+    }, 300);
+}
+
+// interval sesuai durasi
+setInterval(showMedia, slideDuration);
+
+// MUSIC
+function playMusic(){
+    document.getElementById("music").play();
+}
+</script>
+
+</body>
+</html>
